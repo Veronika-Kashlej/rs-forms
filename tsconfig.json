@@ -18,12 +18,17 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["*"],
-      "@/components/*": ["components/*"]
-    }
+      "@/components/*": ["components/*"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@store/*": ["src/store/*"],
+      "@utils/*": ["src/utils/*"]
+    },
+    "types": ["node"]
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
