@@ -20,7 +20,10 @@ export interface ReduxFormData {
   terms: boolean;
   picture: string;
   country: string;
+  timestamp: number;
+  formType: 'uncontrolled' | 'hook';
 }
+
 export interface FormErrors {
   name?: string;
   age?: string;

@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFormData } from '@/store/slices/formSlice';
 import { RootState } from '@/store/store';
 import { schema } from '@/schemas/validation';
-import { Country, ReduxFormData, FormData } from '@/store/types/types';
+import { Country, FormData } from '@/store/types/types';
 import convertToBase64 from '@/store/utils/convertToBase64';
-
-const HookForm: React.FC = () => {
+interface HookFormProps {
+  onClose: () => void;
+}
+const HookForm: React.FC<HookFormProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const countries = useSelector((state: RootState) => state.form.countries);
   const [selectedFileName, setSelectedFileName] = useState('');
@@ -28,7 +30,7 @@ const HookForm: React.FC = () => {
       pictureBase64 = await convertToBase64(data.picture[0]);
     }
 
-    const reduxData: ReduxFormData = {
+    const reduxData = {
       name: data.name,
       age: data.age,
       email: data.email,
@@ -38,23 +40,18 @@ const HookForm: React.FC = () => {
       terms: data.terms,
       picture: pictureBase64,
       country: data.country,
+      timestamp: Date.now(),
+      formType: 'hook' as const,
     };
 
-    dispatch(
-      setFormData({
-        formType: 'hook',
-        data: reduxData,
-      })
-    );
-
-    alert('Form submitted successfully!');
+    dispatch(setFormData(reduxData));
+    onClose();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     setSelectedFileName(files?.[0]?.name || '');
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
       <div className="form-group">

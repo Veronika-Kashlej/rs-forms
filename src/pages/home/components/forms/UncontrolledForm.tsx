@@ -6,8 +6,10 @@ import './form.css';
 import { schema } from '@/schemas/validation';
 import { FormErrors } from '@/store/types/types';
 import convertToBase64 from '@/store/utils/convertToBase64';
-
-const UncontrolledForm: React.FC = () => {
+interface UncontrolledFormProps {
+  onClose: () => void;
+}
+const UncontrolledForm: React.FC<UncontrolledFormProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -39,6 +41,7 @@ const UncontrolledForm: React.FC = () => {
       if (formDataObj.picture && formDataObj.picture.size > 0) {
         pictureBase64 = await convertToBase64(formDataObj.picture);
       }
+
       const reduxData = {
         name: formDataObj.name,
         age: formDataObj.age,
@@ -49,17 +52,13 @@ const UncontrolledForm: React.FC = () => {
         terms: formDataObj.terms,
         picture: pictureBase64,
         country: formDataObj.country,
+        timestamp: Date.now(),
+        formType: 'uncontrolled' as const,
       };
 
-      dispatch(
-        setFormData({
-          formType: 'uncontrolled',
-          data: reduxData,
-        })
-      );
-
+      dispatch(setFormData(reduxData));
       setErrors({});
-      alert('Form submitted successfully!');
+      onClose();
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         const newErrors: FormErrors = {};

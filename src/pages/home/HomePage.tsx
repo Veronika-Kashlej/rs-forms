@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Modal from '../../components/modal/Modal';
 import UncontrolledForm from './components/forms/UncontrolledForm';
 import HookForm from './components/forms/HookForm';
+import DataDisplay from '@/components/data/DataDisplay';
 
 function HomePage() {
   const [isUncontrolledModalOpen, setIsUncontrolledModalOpen] = useState(false);
@@ -17,19 +18,20 @@ function HomePage() {
           Open React Hook Form
         </button>
       </div>
+      <DataDisplay />
       <Modal
         isOpen={isUncontrolledModalOpen}
         onClose={() => setIsUncontrolledModalOpen(false)}
         title="Uncontrolled Form"
       >
-        <UncontrolledForm />
+        <UncontrolledForm onClose={() => setIsUncontrolledModalOpen(false)} />
       </Modal>
       <Modal
         isOpen={isHookFormModalOpen}
         onClose={() => setIsHookFormModalOpen(false)}
         title="Hook Form"
       >
-        <HookForm />
+        <HookForm onClose={() => setIsHookFormModalOpen(false)} />
       </Modal>
     </>
   );
