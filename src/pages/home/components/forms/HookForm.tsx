@@ -1,111 +1,158 @@
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { setFormData } from '@store/slices/formSlice';
-import FormData from '@store/types';
-import './form.css';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFormData } from '@/store/slices/formSlice';
+import { RootState } from '@/store/store';
+import { schema } from '@/schemas/validation';
+import { Country, ReduxFormData, FormData } from '@/store/types/types';
+import convertToBase64 from '@/store/utils/convertToBase64';
 
-function HookForm() {
+const HookForm: React.FC = () => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, setValue } = useForm<FormData>();
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setValue('image', reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const countries = useSelector((state: RootState) => state.form.countries);
+  const [selectedFileName, setSelectedFileName] = useState('');
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+  });
+
+  const onSubmit = async (data: FormData) => {
+    let pictureBase64 = '';
+    if (data.picture && data.picture.length > 0) {
+      pictureBase64 = await convertToBase64(data.picture[0]);
     }
+
+    const reduxData: ReduxFormData = {
+      name: data.name,
+      age: data.age,
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      gender: data.gender,
+      terms: data.terms,
+      picture: pictureBase64,
+      country: data.country,
+    };
+
+    dispatch(
+      setFormData({
+        formType: 'hook',
+        data: reduxData,
+      })
+    );
+
+    alert('Form submitted successfully!');
   };
-  const onSubmit = (data: FormData) => {
-    dispatch(setFormData({ formType: 'hook', data }));
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    setSelectedFileName(files?.[0]?.name || '');
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="hook-name">Name:</label>
-        <input type="text" id="hook-name" {...register('name')} />
+    <form onSubmit={handleSubmit(onSubmit)} className="form">
+      <div className="form-group">
+        <label htmlFor="hook-name">Name</label>
+        <input id="hook-name" {...register('name')} />
+        {errors.name && <div className="error">{errors.name?.message}</div>}
       </div>
 
-      <div>
-        <label htmlFor="hook-age">Age:</label>
-        <input type="number" id="hook-age" {...register('age')} />
-      </div>
-
-      <div>
-        <label htmlFor="hook-email">Email:</label>
-        <input type="email" id="hook-email" {...register('email')} />
-      </div>
-
-      <div>
-        <label htmlFor="hook-password">Password:</label>
-        <input type="password" id="hook-password" {...register('password')} />
-      </div>
-
-      <div>
-        <label htmlFor="hook-confirmPassword">Confirm Password:</label>
+      <div className="form-group">
+        <label htmlFor="hook-age">Age</label>
         <input
-          type="password"
+          id="hook-age"
+          type="number"
+          {...register('age', { valueAsNumber: true })}
+        />
+        {errors.age && <div className="error">{errors.age?.message}</div>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="hook-email">Email</label>
+        <input id="hook-email" type="email" {...register('email')} />
+        {errors.email && <div className="error">{errors.email?.message}</div>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="hook-password">Password</label>
+        <input id="hook-password" type="password" {...register('password')} />
+        {errors.password && (
+          <div className="error">{errors.password?.message}</div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="hook-confirmPassword">Confirm Password</label>
+        <input
           id="hook-confirmPassword"
+          type="password"
           {...register('confirmPassword')}
         />
+        {errors.confirmPassword && (
+          <div className="error">{errors.confirmPassword?.message}</div>
+        )}
       </div>
 
-      <div>
-        <label>Пол:</label>
-        <div>
-          <input
-            type="radio"
-            id="hook-male"
-            value="male"
-            {...register('gender')}
-          />
-          <label htmlFor="hook-male">Male</label>
-        </div>
-        <div>
-          <input
-            type="radio"
-            id="hook-female"
-            value="female"
-            {...register('gender')}
-          />
-          <label htmlFor="hook-female">Female</label>
-        </div>
-      </div>
-
-      <div>
-        <input
-          type="checkbox"
-          id="hook-acceptTerms"
-          {...register('acceptTerms')}
-        />
-        <label htmlFor="hook-acceptTerms">
-          I accept the terms of the agreement
-        </label>
-      </div>
-
-      <div>
-        <label htmlFor="hook-image">Upload image:</label>
-        <input type="file" id="hook-image" onChange={handleFileChange} />
-      </div>
-
-      <div>
-        <label htmlFor="hook-country">Страна:</label>
-        <select id="hook-country" {...register('country')}>
-          <option value="">Select country</option>
-          <option value="ru">Russia</option>
-          <option value="us">USA</option>
-          <option value="de">Germany</option>
-          <option value="cn">China</option>
-          <option value="by">Belarus</option>
-          <option value="fr">France</option>
+      <div className="form-group">
+        <label htmlFor="hook-gender">Gender</label>
+        <select id="hook-gender" {...register('gender')}>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
         </select>
+        {errors.gender && <div className="error">{errors.gender?.message}</div>}
       </div>
 
-      <button type="submit">Submit</button>
+      <div className="form-group">
+        <label htmlFor="hook-picture">Profile Picture (optional)</label>
+        <input
+          id="hook-picture"
+          type="file"
+          accept=".jpeg,.jpg,.png"
+          {...register('picture')}
+          onChange={handleFileChange}
+        />
+        {selectedFileName && <div>Selected: {selectedFileName}</div>}
+        {errors.picture && (
+          <div className="error">{errors.picture?.message}</div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="hook-country">Country</label>
+        <input
+          id="hook-country"
+          list="countries-list"
+          {...register('country')}
+        />
+        <datalist id="countries-list">
+          {countries.map((country: Country) => (
+            <option key={country.code} value={country.name} />
+          ))}
+        </datalist>
+        {errors.country && (
+          <div className="error">{errors.country?.message}</div>
+        )}
+      </div>
+
+      <div className="form-group checkbox-group">
+        <input id="hook-terms" type="checkbox" {...register('terms')} />
+        <label htmlFor="hook-terms">I accept the Terms and Conditions</label>
+        {errors.terms && <div className="error">{errors.terms?.message}</div>}
+      </div>
+
+      <button type="submit" disabled={!isValid}>
+        Submit
+      </button>
     </form>
   );
-}
+};
 
 export default HookForm;
