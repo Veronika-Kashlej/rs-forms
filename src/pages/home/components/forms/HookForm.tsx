@@ -7,6 +7,12 @@ import { RootState } from '@/store/store';
 import { schema } from '@/schemas/validation';
 import { Country, FormData } from '@/store/types/types';
 import convertToBase64 from '@/store/utils/convertToBase64';
+import {
+  checkPasswordStrength,
+  getStrengthColor,
+  getStrengthText,
+  PasswordStrengthResult,
+} from '@/store/utils/passwordStrength';
 interface HookFormProps {
   onClose: () => void;
 }
@@ -14,16 +20,30 @@ const HookForm: React.FC<HookFormProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const countries = useSelector((state: RootState) => state.form.countries);
   const [selectedFileName, setSelectedFileName] = useState('');
-
+  const [passwordStrength, setPasswordStrength] =
+    useState<PasswordStrengthResult>({
+      strength: 'very-weak' as const,
+      score: 0,
+      feedback: [],
+    });
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
-
+  const passwordValue = watch('password', '');
+  React.useEffect(() => {
+    if (passwordValue) {
+      const strength = checkPasswordStrength(passwordValue);
+      setPasswordStrength(strength);
+    } else {
+      setPasswordStrength({ strength: 'very-weak', score: 0, feedback: [] });
+    }
+  }, [passwordValue]);
   const onSubmit = async (data: FormData) => {
     let pictureBase64 = '';
     if (data.picture && data.picture.length > 0) {
@@ -79,11 +99,35 @@ const HookForm: React.FC<HookFormProps> = ({ onClose }) => {
       <div className="form-group">
         <label htmlFor="hook-password">Password</label>
         <input id="hook-password" type="password" {...register('password')} />
+        {passwordValue && (
+          <div className="password-strength">
+            <div className="strength-bar">
+              <div
+                className="strength-fill"
+                style={{
+                  width: `${(passwordStrength.score / 8) * 100}%`,
+                  backgroundColor: getStrengthColor(passwordStrength.strength),
+                }}
+              />
+            </div>
+            <div className="strength-text">
+              Strength: {getStrengthText(passwordStrength.strength)}
+            </div>
+            {passwordStrength.feedback.length > 0 && (
+              <div className="strength-feedback">
+                {passwordStrength.feedback.map((msg, index) => (
+                  <div key={index} className="feedback-item">
+                    • {msg}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         {errors.password && (
           <div className="error">{errors.password?.message}</div>
         )}
       </div>
-
       <div className="form-group">
         <label htmlFor="hook-confirmPassword">Confirm Password</label>
         <input

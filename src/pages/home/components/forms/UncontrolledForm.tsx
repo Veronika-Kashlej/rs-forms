@@ -6,6 +6,12 @@ import './form.css';
 import { schema } from '@/schemas/validation';
 import { FormErrors } from '@/store/types/types';
 import convertToBase64 from '@/store/utils/convertToBase64';
+import {
+  checkPasswordStrength,
+  getStrengthColor,
+  getStrengthText,
+  PasswordStrengthResult,
+} from '@/store/utils/passwordStrength';
 interface UncontrolledFormProps {
   onClose: () => void;
 }
@@ -13,7 +19,22 @@ const UncontrolledForm: React.FC<UncontrolledFormProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<FormErrors>({});
-
+  const [passwordStrength, setPasswordStrength] =
+    useState<PasswordStrengthResult>({
+      strength: 'very-weak' as const,
+      score: 0,
+      feedback: [],
+    });
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const password = e.target.value;
+    if (password) {
+      const strength = checkPasswordStrength(password);
+      setPasswordStrength(strength);
+    } else {
+      setPasswordStrength({ strength: 'very-weak', score: 0, feedback: [] });
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -94,10 +115,40 @@ const UncontrolledForm: React.FC<UncontrolledFormProps> = ({ onClose }) => {
 
       <div className="form-group">
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ref={passwordRef}
+          onChange={handlePasswordChange}
+        />
+        {passwordRef.current?.value && (
+          <div className="password-strength">
+            <div className="strength-bar">
+              <div
+                className="strength-fill"
+                style={{
+                  width: `${(passwordStrength.score / 8) * 100}%`,
+                  backgroundColor: getStrengthColor(passwordStrength.strength),
+                }}
+              />
+            </div>
+            <div className="strength-text">
+              Strength: {getStrengthText(passwordStrength.strength)}
+            </div>
+            {passwordStrength.feedback.length > 0 && (
+              <div className="strength-feedback">
+                {passwordStrength.feedback.map((msg, index) => (
+                  <div key={index} className="feedback-item">
+                    • {msg}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         {errors.password && <div className="error">{errors.password}</div>}
       </div>
-
       <div className="form-group">
         <label htmlFor="confirmPassword">Confirm Password</label>
         <input type="password" id="confirmPassword" name="confirmPassword" />
