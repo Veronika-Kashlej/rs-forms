@@ -83,8 +83,6 @@ export const getStrengthColor = (strength: PasswordStrength): string => {
       return '#73d13d';
     case 'very-strong':
       return '#389e0d';
-    default:
-      return '#d9d9d9';
   }
 };
 
@@ -100,7 +98,5 @@ export const getStrengthText = (strength: PasswordStrength): string => {
       return 'Strong';
     case 'very-strong':
       return 'Very Strong';
-    default:
-      return '';
   }
 };
