@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">29.54% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/44</span>
+                <span class='fraction'>28/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">29.54% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/44</span>
+                <span class='fraction'>28/44</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -134,45 +134,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -199,40 +199,40 @@ const ModalPortal: React.FC&lt;ModalPortalProps&gt; = ({
   onClose,
 }) =&gt; {
   useEffect(() =&gt; {
-    if (!isOpen) <span class="branch-0 cbranch-no" title="branch not covered" >return;</span>
+    if (!isOpen) return;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    const handleEscape = <span class="fstat-no" title="function not covered" >(e: KeyboardEvent) =&gt; {</span></span>
+    const handleEscape = <span class="fstat-no" title="function not covered" >(e: KeyboardEvent) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      if (e.keyCode === 27) {</span>
 <span class="cstat-no" title="statement not covered" >        onClose();</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    };</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    const handleOutsideClick = <span class="fstat-no" title="function not covered" >(e: MouseEvent) =&gt; {</span></span>
+    const handleOutsideClick = <span class="fstat-no" title="function not covered" >(e: MouseEvent) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      const overlay = document.querySelector('.modal-overlay');</span>
 <span class="cstat-no" title="statement not covered" >      if (overlay &amp;&amp; e.target === overlay) {</span>
 <span class="cstat-no" title="statement not covered" >        onClose();</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    };</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    document.addEventListener('keydown', handleEscape);</span>
-<span class="cstat-no" title="statement not covered" >    document.addEventListener('click', handleOutsideClick);</span>
-<span class="cstat-no" title="statement not covered" >    document.body.classList.add('modal-open');</span>
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('click', handleOutsideClick);
+    document.body.classList.add('modal-open');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      document.removeEventListener('keydown', handleEscape);</span>
-<span class="cstat-no" title="statement not covered" >      document.removeEventListener('click', handleOutsideClick);</span>
-<span class="cstat-no" title="statement not covered" >      document.body.classList.remove('modal-open');</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
+    return () =&gt; {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('click', handleOutsideClick);
+      document.body.classList.remove('modal-open');
+    };
   }, [isOpen, onClose]);
 &nbsp;
-  if (!isOpen) return <span class="branch-0 cbranch-no" title="branch not covered" >null;</span>
+  if (!isOpen) return null;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const modalRoot = document.getElementById('modal-root');</span>
+  const modalRoot = document.getElementById('modal-root');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!modalRoot) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error('Modal root element not found!');</span>
-<span class="cstat-no" title="statement not covered" >    return null;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (!modalRoot) {
+    console.error('Modal root element not found!');
+    return null;
+<span class="branch-0 cbranch-no" title="branch not covered" >  }</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return createPortal(</span>
 <span class="cstat-no" title="statement not covered" >    &lt;div className="modal-overlay"&gt;</span>
@@ -250,7 +250,7 @@ export default ModalPortal;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-24T16:09:25.925Z
+                at 2025-08-24T16:52:51.147Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -28,6 +28,7 @@ export default defineConfig({
         '**/main.tsx',
         '**/*.d.ts',
         '**/*.config.{js,ts}',
+        '**/dist/**',
       ],
     },
   },
