@@ -31,8 +31,8 @@ const HookForm: React.FC<HookFormProps> = ({ onClose }) => {
     handleSubmit,
     formState: { errors, isValid },
     watch,
-  } = useForm({
-    resolver: yupResolver(schema),
+  } = useForm<FormData>({
+    resolver: yupResolver(schema as any),
     mode: 'onChange',
   });
   const passwordValue = watch('password', '');
@@ -57,7 +57,7 @@ const HookForm: React.FC<HookFormProps> = ({ onClose }) => {
       password: data.password,
       confirmPassword: data.confirmPassword,
       gender: data.gender,
-      terms: data.terms,
+      terms: data.terms || false,
       picture: pictureBase64,
       country: data.country,
       timestamp: Date.now(),
